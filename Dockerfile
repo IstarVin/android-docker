@@ -41,6 +41,7 @@ RUN apt-get update \
     rsync \
     schedtool \
     squashfs-tools \
+    tmux \
     unzip \
     wget \
     xsltproc \
@@ -59,6 +60,10 @@ ARG BUILD_USER=ubuntu
 ARG BUILD_UID=1000
 
 RUN usermod -s /bin/bash ${BUILD_USER}
+
+# Grant passwordless sudo access to the build user
+RUN echo "${BUILD_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/${BUILD_USER} \
+ && chmod 0440 /etc/sudoers.d/${BUILD_USER}
 
 # Setup ccache directory
 RUN mkdir -p ${CCACHE_DIR} \
